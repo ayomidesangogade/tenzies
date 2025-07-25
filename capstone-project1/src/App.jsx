@@ -14,7 +14,7 @@ function App() {
     diceArray.map((randNumber) => newDiceArray.push(
       {
         value: randNumber, 
-        isHeld: true,
+        isHeld: false,
         id: nanoid()
       }
     ))
@@ -22,14 +22,12 @@ function App() {
   }
 
   function hold(id) {
-    // setDice(prev => [...prev, ])
-    //setDice(prev => [...prev, prev.map(element => element.id === id ? {...element, isHeld: !element.isHeld } : prev))
-    // element.id === id ? [...prev, {...element, isHeld: !element.isHeld }] : prev
+    setDice(prev => prev.map(element => element.id === id ? {...prev, isHeld: !element.isHeld} : element))
   }
   
-  const diceElements = dice.map((element) => 
+  const diceElements = dice.map((element, index) => 
     <Die 
-      key={element.id}
+      key={index}
       id={element.id} 
       num={element.value} 
       isHeld={element.isHeld}
