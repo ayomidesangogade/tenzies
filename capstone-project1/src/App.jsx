@@ -1,34 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react"
+import Die from "./components/Die"
+import { nanoid } from "nanoid"
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [dice, setDice] = React.useState(generateAllNewDice())
+
+  function generateAllNewDice() {
+    const newDiceArray = []
+    const diceArray = []
+    for (let i = 0; i < 10; i++) {
+      diceArray.push(Math.floor(Math.random() * 6) + 1)
+    }
+    diceArray.map((randNumber) => newDiceArray.push(
+      {
+        value: randNumber, 
+        isHeld: true,
+        id: nanoid()
+      }
+    ))
+    return newDiceArray
+  }
+
+  function hold(id) {
+    // setDice(prev => [...prev, ])
+    //setDice(prev => [...prev, prev.map(element => element.id === id ? {...element, isHeld: !element.isHeld } : prev))
+    // element.id === id ? [...prev, {...element, isHeld: !element.isHeld }] : prev
+  }
+  
+  const diceElements = dice.map((element) => 
+    <Die 
+      key={element.id}
+      id={element.id} 
+      num={element.value} 
+      isHeld={element.isHeld}
+      hold={hold}
+    />)
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <main>
+      <div className="dice-container">
+          {diceElements}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <button className="roll-dice" onClick={() => setDice(generateAllNewDice())}>Roll</button>
+    </main>
   )
 }
 
